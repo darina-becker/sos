@@ -17,6 +17,7 @@ class TargetCli(Plugin, IndependentPlugin):
     packages = ('targetcli', 'python-rtslib')
     profiles = ('storage', )
     plugin_name = 'targetcli'
+    option_list = [("add_path", "additional path to collect", "fast", None)]
 
     def setup(self):
         self.add_cmd_output([
@@ -27,5 +28,9 @@ class TargetCli(Plugin, IndependentPlugin):
         self.add_journal(units="targetcli")
         self.add_copy_spec("/sys/kernel/config/target")
         self.add_copy_spec("/etc/target")
+
+        additional_path = self.get_option("add_path")
+        if additional_path is not None:
+            self.add_copy_spec(additional_path)
 
 # vim: set et ts=4 sw=4 :
